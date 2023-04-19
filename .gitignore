@@ -1,32 +1,34 @@
-# Prerequisites
-*.d
+# From .NET Core 3.0 you can use the command: `dotnet new gitignore` to generate a customizable .gitignore file
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+*.swp
+*.*~
+project.lock.json
+.DS_Store
+*.pyc
 
-# Precompiled Headers
-*.gch
-*.pch
+# Visual Studio Code
+.vscode
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
-# Fortran module files
-*.mod
-*.smod
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+msbuild.log
+msbuild.err
+msbuild.wrn
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+# Visual Studio 2015
+.vs/
