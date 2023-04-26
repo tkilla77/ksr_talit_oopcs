@@ -6,14 +6,6 @@ public class Vector {
         this.components = components;
     }
 
-    public double X() {
-        return x;
-    }
-
-    public double Y() {
-        return y;
-    }
-
     public double Magnitude {
         get {
             double total = 0;
