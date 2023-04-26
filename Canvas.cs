@@ -13,7 +13,10 @@ public class Canvas {
     }
 
     private SKPoint toPoint(Vector v) {
-        return new SKPoint((float) v.X(), (float) v.Y());
+        if (v.Dim != 2) {
+            throw new System.Exception("Can only handle 2d points");
+        }
+        return new SKPoint((float) v.Components[0], (float)v.Components[1]);
     }
 
     public void Line(Vector from, Vector to) {

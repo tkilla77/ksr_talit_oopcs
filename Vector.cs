@@ -1,11 +1,9 @@
 namespace geometry;
 
 public class Vector {
-    double x;
-    double y;
-    public Vector(double x, double y) {
-        this.x = x;
-        this.y = y;
+    double[] components;
+    public Vector(params double[] components) {
+        this.components = components;
     }
 
     public double X() {
@@ -16,17 +14,26 @@ public class Vector {
         return y;
     }
 
-    public double Length() {
-        return Math.Sqrt(x*x + y*y);
+    public double Magnitude {
+        get {
+            double total = 0;
+            foreach (double c in Components) {
+                total += c*c;
+            }
+            return Math.Sqrt(total);
+        }
     }
 
+    public int Dim {
+        get {
+            return components.Length;
+        }
+    }
+
+    public double[] Components { get {return components;} }
 
     public override string ToString() {
-        return $"[{x}, {y}] (Len: {Length()})";
+        return $"{components} (Len: {Magnitude})";
     }
 
-    public void Move(Vector translation) {
-        this.x += translation.x;
-        this.y += translation.y;
-    }
 }
