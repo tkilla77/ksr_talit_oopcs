@@ -1,8 +1,6 @@
 namespace geometry;
 
 public abstract class Figure {
-    protected abstract Vector[] Points();
-
     /**
      * Draws this figure onto canvas. The default implementation draws a line
      * between each consecutive pair of points of the figure.
@@ -16,7 +14,7 @@ public class Polygon : Figure {
     public Polygon(params Vector[] points) {
         this.points = points;
     }
-    protected override Vector[] Points() {
+    protected virtual Vector[] Points() {
         return points;
     }
 
@@ -31,14 +29,14 @@ public class Polygon : Figure {
 }
 
 public class Square : Polygon {
-    private Vector a, b;
-    public Square(Vector a, Vector b) {
-        this.a = a;
-        this.b = b;
+    private Vector corner, side;
+    public Square(Vector corner, Vector side) {
+        this.corner = corner;
+        this.side = side;
     }
 
     protected override Vector[] Points() {
-        Vector perpendicular = new Vector(-b.Components[1], b.Components[0]);
-        return new Vector[] {a, a+b, a+b+perpendicular, a+perpendicular};
+        Vector perpendicular = new Vector(-side.Components[1], side.Components[0]);
+        return new Vector[] {corner, corner+side, corner+side+perpendicular, corner+perpendicular};
     }
 }
