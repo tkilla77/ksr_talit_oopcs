@@ -1,5 +1,6 @@
 namespace geometry;
 
+/** Any 2D figure. */
 public abstract class Figure {
     /**
      * Draws this figure onto canvas. The default implementation draws a line
@@ -8,12 +9,14 @@ public abstract class Figure {
     public abstract void Draw(Canvas canvas);
 }
 
+/** A closed polygon. */
 public class Polygon : Figure {
     private Vector[] points;
 
     public Polygon(params Vector[] points) {
         this.points = points;
     }
+    /** The sequence of points to be connected. */
     protected virtual Vector[] Points() {
         return points;
     }
@@ -28,6 +31,7 @@ public class Polygon : Figure {
     }
 }
 
+/** A square is also a polygon, but we save some space by only storing a corner and a side vector. */
 public class Square : Polygon {
     private Vector corner, side;
     public Square(Vector corner, Vector side) {
@@ -36,6 +40,7 @@ public class Square : Polygon {
     }
 
     protected override Vector[] Points() {
+        // other side is perpendicular to side: [-y, x]
         Vector perpendicular = new Vector(-side.Components[1], side.Components[0]);
         return new Vector[] {corner, corner+side, corner+side+perpendicular, corner+perpendicular};
     }
