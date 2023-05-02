@@ -28,4 +28,19 @@ public class Vector {
         return $"{components} (Len: {Magnitude})";
     }
 
+    public static Vector Add(Vector one, Vector two) {
+        if (one.Dim != two.Dim) {
+            throw new Exception("Vectors must have same number of dimensions!");
+        }
+        double[] components = new double[one.Dim];
+        for (int i = 0; i < one.Dim; i++) {
+            components[i] = one.Components[i] + two.Components[i];
+        }
+        return new Vector(components);
+    }
+
+    public static Vector operator+(Vector one, Vector two) {
+        return Vector.Add(one, two);
+    }
+
 }
