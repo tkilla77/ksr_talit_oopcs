@@ -3,7 +3,7 @@ namespace geometry;
 using SkiaSharp;
 using System.IO;
 
-public class Canvas {
+public class Canvas : IDisposable {
     private SKBitmap bitmap;
     private SKCanvas canvas;
 
@@ -20,13 +20,21 @@ public class Canvas {
     }
 
     public void Line(Vector from, Vector to) {
-        SKPaint paint = new SKPaint
-        {
+        SKPaint paint = new SKPaint {
             Style = SKPaintStyle.Stroke,
             StrokeWidth = 5
         };
         canvas.DrawLine(toPoint(from), toPoint(to), paint);
     }
+
+    public void Circle(Vector center, double radius) {
+        SKPaint paint = new SKPaint {
+            Style = SKPaintStyle.Stroke,
+            StrokeWidth = 5
+        };
+        canvas.DrawCircle(toPoint(center).X, toPoint(center).Y, (float) radius, paint);
+    }
+
 
     public void Save(string filename) {
         using (FileStream stream = File.Create(filename)) {
@@ -34,5 +42,10 @@ public class Canvas {
             ReadOnlySpan<byte> span = data.AsSpan();
             stream.Write(span);
         }
+    }
+    
+    public void Dispose() {
+        canvas.Dispose();
+        bitmap.Dispose();
     }
 }

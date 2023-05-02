@@ -7,7 +7,20 @@ public abstract class Figure {
      * Draws this figure onto canvas. The default implementation draws a line
      * between each consecutive pair of points of the figure.
      */
-    public void Draw(Canvas canvas) {
+    public abstract void Draw(Canvas canvas);
+}
+
+public class Polygon : Figure {
+    private Vector[] points;
+
+    public Polygon(params Vector[] points) {
+        this.points = points;
+    }
+    protected override Vector[] Points() {
+        return points;
+    }
+
+    public override void Draw(Canvas canvas) {
         Vector[] points = Points();
         Vector last = points[points.Length - 1];
         foreach (Vector v in Points()) {
@@ -17,15 +30,15 @@ public abstract class Figure {
     }
 }
 
-public class Triangle : Figure {
-    private Vector a, b, c;
-    public Triangle(Vector a, Vector b, Vector c) {
+public class Square : Polygon {
+    private Vector a, b;
+    public Square(Vector a, Vector b) {
         this.a = a;
         this.b = b;
-        this.c = c;
     }
 
     protected override Vector[] Points() {
-        return new Vector[] {a, b, c};
+        Vector perpendicular = new Vector(-b.Components[1], b.Components[0]);
+        return new Vector[] {a, a+b, a+b+perpendicular, a+perpendicular};
     }
 }
