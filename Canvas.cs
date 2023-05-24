@@ -38,19 +38,39 @@ public class Canvas : IDisposable {
         canvas.DrawLine(toPoint(from), toPoint(to), paint);
     }
 
-    public void Circle(Vector center, double radius, string strokeColor, string fillColor) {
-        SKPaint strokePaint = new SKPaint {
+    public void Polygon(Vector[] points, string strokeColor, string fillColor) {
+        canvas.DrawPath(ToPoints(points), MakeStrokeColor(strokeColor));
+        canvas.DrawPath(ToPoints(points), MakeFillColor(fillColor));
+    }
+
+    private SKPath ToPoints(Vector[] points) {
+        SKPath path = new SKPath{FillType = SKPathFillType.EvenOdd};
+        path.MoveTo(toPoint(points[0]));
+        foreach (Vector v in points) {
+            path.LineTo(toPoint(v));
+        }
+        path.Close();
+        return path;
+    }
+
+    private SKPaint MakeFillColor(string fillColor) {
+        return new SKPaint {
+            Color = GetColor(fillColor),
+            Style = SKPaintStyle.Fill,
+        };
+    }
+
+    private SKPaint MakeStrokeColor(string strokeColor) {
+        return new SKPaint {
             Color = GetColor(strokeColor),
             Style = SKPaintStyle.Stroke,
             StrokeWidth = 5
         };
+    }
 
-        canvas.DrawCircle(toPoint(center).X, toPoint(center).Y, (float) radius, strokePaint);
-        SKPaint fillPaint = new SKPaint {
-            Color = GetColor(fillColor),
-            Style = SKPaintStyle.Fill,
-        };
-        canvas.DrawCircle(toPoint(center).X, toPoint(center).Y, (float) radius, fillPaint);
+    public void Circle(Vector center, double radius, string strokeColor, string fillColor) {
+        canvas.DrawCircle(toPoint(center).X, toPoint(center).Y, (float) radius, MakeStrokeColor(strokeColor));
+        canvas.DrawCircle(toPoint(center).X, toPoint(center).Y, (float) radius, MakeFillColor(fillColor));
     }
 
     private SKColor GetColor(string color) {
