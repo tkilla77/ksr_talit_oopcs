@@ -13,15 +13,6 @@ public class Canvas : IDisposable {
         canvas.Clear(SKColors.White);
     }
 
-    private SKPaint MakePaint(SKColor color, SKPaintStyle style) {
-        return new SKPaint {
-            Style = style,
-            StrokeCap = SKStrokeCap.Round,
-            StrokeWidth = 5,
-            Color = color,
-        };
-    }
-
     private SKPoint toPoint(Vector v) {
         if (v.Dim != 2) {
             throw new System.Exception("Can only handle 2d points");
@@ -41,6 +32,11 @@ public class Canvas : IDisposable {
     public void Polygon(Vector[] points, string strokeColor, string fillColor) {
         canvas.DrawPath(ToPoints(points), MakeStrokeColor(strokeColor));
         canvas.DrawPath(ToPoints(points), MakeFillColor(fillColor));
+    }
+
+    public void Circle(Vector center, double radius, string strokeColor, string fillColor) {
+        canvas.DrawCircle(toPoint(center).X, toPoint(center).Y, (float) radius, MakeStrokeColor(strokeColor));
+        canvas.DrawCircle(toPoint(center).X, toPoint(center).Y, (float) radius, MakeFillColor(fillColor));
     }
 
     private SKPath ToPoints(Vector[] points) {
@@ -66,11 +62,6 @@ public class Canvas : IDisposable {
             Style = SKPaintStyle.Stroke,
             StrokeWidth = 5
         };
-    }
-
-    public void Circle(Vector center, double radius, string strokeColor, string fillColor) {
-        canvas.DrawCircle(toPoint(center).X, toPoint(center).Y, (float) radius, MakeStrokeColor(strokeColor));
-        canvas.DrawCircle(toPoint(center).X, toPoint(center).Y, (float) radius, MakeFillColor(fillColor));
     }
 
     private SKColor GetColor(string color) {
