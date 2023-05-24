@@ -1,7 +1,16 @@
 namespace geometry;
+using SkiaSharp;
 
 /** Any 2D figure. */
 public abstract class Figure {
+    public string StrokeColor = "black";
+    public string FillColor = "red"; // Transparent
+
+    public void SetColors(string strokeColor, string fillColor) {
+        StrokeColor = strokeColor;
+        FillColor = fillColor;
+    }
+
     /**
      * Draws this figure onto canvas. The default implementation draws a line
      * between each consecutive pair of points of the figure.
@@ -23,11 +32,7 @@ public class Polygon : Figure {
 
     public override void Draw(Canvas canvas) {
         Vector[] points = Points();
-        Vector last = points[points.Length - 1];
-        foreach (Vector v in Points()) {
-            canvas.Line(last, v);
-            last = v;
-        }
+        canvas.Polygon(points, StrokeColor, FillColor);
     }
 }
 
@@ -43,5 +48,20 @@ public class Square : Polygon {
         // other side is perpendicular to side: [-y, x]
         Vector perpendicular = new Vector(-side.Components[1], side.Components[0]);
         return new Vector[] {corner, corner+side, corner+side+perpendicular, corner+perpendicular};
+    }
+}
+
+public class Circle : Figure {
+    private Vector center;
+
+    private Vector radius;
+
+    public Circle(Vector center, Vector radius) {
+        this.center = center;
+        this.radius = radius;
+    }
+    
+    public override void Draw(Canvas canvas) {
+        canvas.Circle(center, radius.Magnitude, StrokeColor, FillColor);
     }
 }

@@ -9,5 +9,8 @@ using (Canvas canvas = new Canvas()) {
     Figure square = new Square(new Vector(300,300), new Vector(100, 50));
     square.Draw(canvas);
 
+    Figure circle = new Circle(new Vector(400, 100), new Vector(100,0));
+    circle.Draw(canvas);
+
     canvas.Save("example.png");
 }
