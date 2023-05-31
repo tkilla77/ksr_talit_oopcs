@@ -80,6 +80,10 @@ public class Canvas : IDisposable {
             stream.Write(span);
         }
     }
+
+    public void Clear() {
+        canvas.Clear();
+    }
     
     public void Dispose() {
         canvas.Dispose();
