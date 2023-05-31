@@ -83,6 +83,7 @@ public class Canvas : IDisposable {
 
     public void Clear() {
         canvas.Clear();
+        bitmap.Erase(SKColors.White);
     }
     
     public void Dispose() {
