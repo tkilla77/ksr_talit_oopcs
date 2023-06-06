@@ -43,4 +43,9 @@ public class Vector {
         return Vector.Add(one, two);
     }
 
+    public void Move(Vector v) {
+        Vector sum = this + v;
+        this.components = sum.components;
+    }
+
 }
