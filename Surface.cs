@@ -15,7 +15,6 @@ public class Surface : Game {
     private Color[] _buffer;
     private int _direction = 1;
 
-
     public Surface() {
         _graphics = new GraphicsDeviceManager(this);
         _graphics.IsFullScreen = false;
