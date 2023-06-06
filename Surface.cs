@@ -48,7 +48,8 @@ public class Surface : Game {
             Exit();
 
         // Make our scene move a bit.
-        if (gameTime.TotalGameTime.TotalSeconds > 3) {
+        // Revert direction a few secs into the game...
+        if (gameTime.TotalGameTime.TotalSeconds > 4) {
             _direction = -1;
         }
         _circle.Move(new Vector(1, _direction * gameTime.TotalGameTime.TotalSeconds));
