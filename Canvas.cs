@@ -7,7 +7,8 @@ public class Canvas : IDisposable {
     private SKBitmap bitmap;
     private SKCanvas canvas;
 
-    public Canvas() {
+    public Canvas() : this(640, 480) {}
+    public Canvas(int width, int height) {
         bitmap = new SKBitmap(640, 480);
         canvas = new SKCanvas(bitmap);
         canvas.Clear(SKColors.White);
@@ -79,6 +80,10 @@ public class Canvas : IDisposable {
             ReadOnlySpan<byte> span = data.AsSpan();
             stream.Write(span);
         }
+    }
+
+    public SKColor[] GetPixels() {
+        return bitmap.Pixels;
     }
 
     public void Clear() {
