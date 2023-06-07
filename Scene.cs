@@ -1,5 +1,6 @@
 namespace geometry;
 
+/** A scene encapsulates multiple figures and their behavior. */
 public abstract class Scene {
     private Canvas canvas = new Canvas(640, 480);
 

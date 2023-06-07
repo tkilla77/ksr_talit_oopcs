@@ -2,8 +2,10 @@ namespace geometry;
 
 public class CircleScene : Scene {
     private Figure circle;
+    private int direction = 1;
+    private int switchTime = 1;
     public CircleScene() {
-        circle = new Circle(new Vector(50, 50), new Vector(30, 0));
+        circle = new Circle(new Vector(50, 240), new Vector(30, 0));
     }
 
     public override void Draw(Canvas canvas) {
@@ -11,6 +13,10 @@ public class CircleScene : Scene {
     }
 
     public override void Update(double totalSeconds, double elapsedSeconds) {
-        circle.Move(new Vector(2, totalSeconds * totalSeconds));
+        circle.Move(new Vector(2, direction * totalSeconds * totalSeconds));
+        if (totalSeconds > switchTime) {
+            direction *= -1;
+            switchTime += 2;
+        }
     }
 }
