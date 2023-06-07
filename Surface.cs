@@ -1,10 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using geometry;
 using SkiaSharp;
 
-namespace surface;
+namespace geometry;
 
 public class Surface : Game {
     private GraphicsDeviceManager _graphics;
