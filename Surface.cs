@@ -11,11 +11,10 @@ public class Surface : Game {
     private Texture2D _texture;
     private SpriteBatch _spriteBatch;
     private Canvas _canvas;
-    private Figure _circle;
     private Color[] _buffer;
-    private int _direction = 1;
+    private Scene _scene;
 
-    public Surface() {
+    public Surface(Scene scene) {
         _graphics = new GraphicsDeviceManager(this);
         _graphics.IsFullScreen = false;
         _graphics.PreferredBackBufferWidth = 640;
@@ -23,7 +22,7 @@ public class Surface : Game {
         _graphics.ApplyChanges();
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-
+        _scene = scene;
     }
 
     protected override void Initialize() {
@@ -31,10 +30,8 @@ public class Surface : Game {
         _texture = new Texture2D(GraphicsDevice, 640, 480);
         _buffer = new Color[_texture.Width * _texture.Height];
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-
         // Resources in our Figure land.
         _canvas = new Canvas(640, 480);
-        _circle = new Circle(new Vector(50, 50), new Vector(30, 0));
 
         base.Initialize();
     }
@@ -47,12 +44,7 @@ public class Surface : Game {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        // Make our scene move a bit.
-        // Revert direction a few secs into the game...
-        if (gameTime.TotalGameTime.TotalSeconds > 4) {
-            _direction = -1;
-        }
-        _circle.Move(new Vector(1, _direction * gameTime.TotalGameTime.TotalSeconds));
+        _scene.Update(gameTime.TotalGameTime.TotalSeconds, gameTime.ElapsedGameTime.TotalSeconds);
 
         base.Update(gameTime);
     }
@@ -60,7 +52,7 @@ public class Surface : Game {
     protected override void Draw(GameTime gameTime) {
         // Draw our scene - only the circle for now.
         _canvas.Clear();
-        _circle.Draw(_canvas);
+        _scene.Draw(_canvas);
 
         // Convert to Monogame land.
         SkCanvasToTexture(_canvas, _texture);
