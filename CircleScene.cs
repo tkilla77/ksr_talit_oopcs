@@ -6,10 +6,8 @@ public class CircleScene : Scene {
     private int switchTime = 1;
     public CircleScene() {
         circle = new Circle(new Vector(50, 240), new Vector(30, 0));
-    }
-
-    public override void Draw(Canvas canvas) {
-        circle.Draw(canvas);
+        circle.SetColors("000", "af00");
+        figures.Add(circle);
     }
 
     public override void Update(double totalSeconds, double elapsedSeconds) {
