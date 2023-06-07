@@ -25,7 +25,7 @@ public class Vector {
     public double[] Components { get {return components;} }
 
     public override string ToString() {
-        return $"{components} (Len: {Magnitude})";
+        return $"[{string.Join(",", Components)}] (Len: {Magnitude})";
     }
 
     public static Vector Add(Vector one, Vector two) {
@@ -38,10 +38,21 @@ public class Vector {
         }
         return new Vector(components);
     }
+    public static Vector ScalarMul(Vector one, double scalar) {
+        double[] components = new double[one.Dim];
+        for (int i = 0; i < one.Dim; i++) {
+            components[i] = one.Components[i] * scalar;
+        }
+        return new Vector(components);
+    }
 
     public static Vector operator+(Vector one, Vector two) {
         return Vector.Add(one, two);
     }
+    public static Vector operator*(Vector one, double two) {
+        return Vector.ScalarMul(one, two);
+    }
+
 
     public void Move(Vector v) {
         Vector sum = this + v;
