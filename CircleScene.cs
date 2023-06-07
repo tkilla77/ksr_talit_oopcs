@@ -13,7 +13,7 @@ public class CircleScene : Scene {
     }
 
     public override void Update(double totalSeconds, double elapsedSeconds) {
-        circle.Move(new Vector(2, direction * totalSeconds * totalSeconds));
+        circle.Move(new Vector(2, direction * totalSeconds));
         if (totalSeconds > switchTime) {
             direction *= -1;
             switchTime += 2;
