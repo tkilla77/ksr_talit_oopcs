@@ -26,6 +26,7 @@ public abstract class Figure {
         }
     }
 
+    /** Returns the set of points that need to be moved for translation. */
     protected abstract IEnumerable<Vector> GetMovingPoints();
 }
 
@@ -82,5 +83,13 @@ public class Circle : Figure {
 
     protected override IEnumerable<Vector> GetMovingPoints() {
         return new Vector[] {center};
+    }
+
+    public Vector Center() {
+        return center;
+    }
+
+    public double Radius() {
+        return radius.Magnitude;
     }
 }
