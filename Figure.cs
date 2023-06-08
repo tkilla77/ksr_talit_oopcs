@@ -63,7 +63,7 @@ public class Square : Polygon {
     protected override Vector[] Points() {
         // other side is perpendicular to side: [-y, x]
         Vector perpendicular = new Vector(-side.Components[1], side.Components[0]);
-        return new Vector[] {corner, corner+side, corner+side+perpendicular, corner+perpendicular};
+        return new Vector[] { corner, corner + side, corner + side + perpendicular, corner + perpendicular };
     }
 }
 
@@ -76,20 +76,20 @@ public class Circle : Figure {
         this.center = center;
         this.radius = radius;
     }
-    
+
     public override void Draw(Canvas canvas) {
         canvas.Circle(center, radius.Magnitude, StrokeColor, FillColor);
     }
 
     protected override IEnumerable<Vector> GetMovingPoints() {
-        return new Vector[] {center};
+        return new Vector[] { center };
     }
 
-    public Vector Center() {
-        return center;
+    public Vector Center {
+        get { return center; }
     }
 
-    public double Radius() {
-        return radius.Magnitude;
+    public double Radius {
+        get { return radius.Magnitude; }
     }
 }
