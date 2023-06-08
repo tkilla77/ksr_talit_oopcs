@@ -45,18 +45,19 @@ public class CircleScene : Scene {
     private const double ScreenResolutionPpi = 160; // PixelsPerInch = PPI
     // 1 Inch = 2.54cm
     // Scaling Factor
-    private const double ScalingFactor = 10;
+    private const double ScalingFactor = 5;
     internal const double PixelsPerMeter = ScreenResolutionPpi / 2.54 * 100 / ScalingFactor;
     // Fraction of momentum maintained in collision direction.
-    private const double CollisionElasticity = 0.99;
+    private readonly double CollisionElasticity = 0.99;
     // Fraction of momentum maintained in non-collision direction.
-    private const double CollisionOtherDimension = 0.999;
+    private readonly double CollisionOtherDimension = 0.999;
     // Drag coefficient of a sphere.
-    private const double DragCoefficient = 0.5;
+    private readonly double DragCoefficient = 0.5;
     // Air density at earth surface.
-    private static Material Medium = Material.Air;
+    private Material Medium = Material.Air;
 
     private Sphere soapBubble, pingPongBall, steelBall;
+
     public CircleScene() {
         // filled with Helium...
         soapBubble = Sphere.SolidSphere(new Circle(new Vector(50, 150), new Vector(0.06 * PixelsPerMeter, 0)), Material.Air);
@@ -82,9 +83,24 @@ public class CircleScene : Scene {
     }
 
     private void UpdateSphere(Sphere sphere, double elapsedSeconds) {
+        // Physics: Collisions, drag, gravity & buoyancy.
+        WallCollision(sphere);
+        ApplyDrag(sphere, elapsedSeconds);
+        ApplyGravityAndBuoyancy(sphere, elapsedSeconds);
+
+        // Move according to the computed speed (translate back from metric to pixel world).
+        Vector translation = sphere.Speed * elapsedSeconds * PixelsPerMeter;
+        Circle shape = sphere.Shape;
+        shape.Move(translation);
+
+        // Ensure we stay within bounds.
+        ClampToSurface(shape);
+    }
+
+    private void WallCollision(Sphere sphere) {
         Circle shape = sphere.Shape;
         Vector speed = sphere.Speed;
-       // Wall collision
+
         Vector center = shape.Center;
         double radius = shape.Radius;
         // Y - Vertical
@@ -99,16 +115,21 @@ public class CircleScene : Scene {
             speed.Components[0] *= -CollisionElasticity; // mirror & dampen
             speed.Components[1] *= CollisionOtherDimension; // dampen only
         }
+    }
 
+    private void ApplyDrag(Sphere sphere, double elapsedSeconds) {
         // Air resistance is approximately proportional to speed^2 and diameter.
-        double radius_si = shape.Radius / PixelsPerMeter;
+        Vector speed = sphere.Speed;
+        double radius_si = sphere.Shape.Radius / PixelsPerMeter;
         double dragForce = DragCoefficient * radius_si * Medium.Density * speed.Magnitude * speed.Magnitude;
         double dragAcceleration = dragForce / sphere.Mass;
-        double factor = 2; // why? looks better!
-        double dragMagnitude = elapsedSeconds * dragAcceleration / factor;
+        double magicFactor = 3; // why? looks better!
+        double dragMagnitude = elapsedSeconds * dragAcceleration / magicFactor;
         double dragMultiplier = Math.Max(0, 1 - dragMagnitude / speed.Magnitude);
-        speed *= dragMultiplier;
+        sphere.Speed *= dragMultiplier;
+    }
 
+    private void ApplyGravityAndBuoyancy(Sphere sphere, double elapsedSeconds) {
         // Gravity
         double gravity = 9.81;
         double gravitationalForce = sphere.Mass * gravity;
@@ -117,14 +138,10 @@ public class CircleScene : Scene {
         double buoyancyForce = buoyancy * gravity;
         // Total of gravitation and buoyancy
         double totalForce = gravitationalForce - buoyancyForce;
-        speed.Components[1] += elapsedSeconds * totalForce / sphere.Mass;
+        sphere.Speed.Components[1] += elapsedSeconds * totalForce / sphere.Mass;
+    }
 
-        // Compute translation vector (pixels) from speed vector (metric)
-        Vector translation = speed * elapsedSeconds * PixelsPerMeter;
-        shape.Move(translation);
-        sphere.Speed = speed;
-
-        // Clamp to surface
+    private void ClampToSurface(Circle shape) {
         shape.Center.Components[0] = Math.Max(shape.Radius, shape.Center.Components[0]);
         shape.Center.Components[0] = Math.Min(640 - shape.Radius, shape.Center.Components[0]);
         shape.Center.Components[1] = Math.Max(shape.Radius, shape.Center.Components[1]);
