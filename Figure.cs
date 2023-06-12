@@ -19,15 +19,6 @@ public abstract class Figure {
      * between each consecutive pair of points of the figure.
      */
     public abstract void Draw(Canvas canvas);
-
-    public virtual void Move(Vector vector) {
-        foreach (Vector v in GetMovingPoints()) {
-            v.Move(vector);
-        }
-    }
-
-    /** Returns the set of points that need to be moved for translation. */
-    protected abstract IEnumerable<Vector> GetMovingPoints();
 }
 
 /** A closed polygon. */
@@ -42,28 +33,9 @@ public class Polygon : Figure {
         return points;
     }
 
-    protected override IEnumerable<Vector> GetMovingPoints() {
-        return Points();
-    }
-
     public override void Draw(Canvas canvas) {
         Vector[] points = Points();
         canvas.Polygon(points, StrokeColor, FillColor);
-    }
-}
-
-/** A square is also a polygon, but we save some space by only storing a corner and a side vector. */
-public class Square : Polygon {
-    private Vector corner, side;
-    public Square(Vector corner, Vector side) {
-        this.corner = corner;
-        this.side = side;
-    }
-
-    protected override Vector[] Points() {
-        // other side is perpendicular to side: [-y, x]
-        Vector perpendicular = new Vector(-side.Components[1], side.Components[0]);
-        return new Vector[] { corner, corner + side, corner + side + perpendicular, corner + perpendicular };
     }
 }
 
@@ -79,10 +51,6 @@ public class Circle : Figure {
 
     public override void Draw(Canvas canvas) {
         canvas.Circle(center, radius.Magnitude, StrokeColor, FillColor);
-    }
-
-    protected override IEnumerable<Vector> GetMovingPoints() {
-        return new Vector[] { center };
     }
 
     public Vector Center {
