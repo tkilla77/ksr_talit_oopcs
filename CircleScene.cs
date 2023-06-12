@@ -107,13 +107,13 @@ public class CircleScene : Scene {
         double radius = shape.Radius;
         // Y - Vertical
         if (center.Components[1] <= radius && speed.Components[1] < 0
-            || center.Components[1] >= 480 - radius && speed.Components[1] > 0) {
+            || center.Components[1] >= Height - radius && speed.Components[1] > 0) {
             speed.Components[0] *= CollisionOtherDimension; // dampen only
             speed.Components[1] *= -CollisionElasticity; // mirror & dampen
         }
         // X - horizontal
         if (center.Components[0] <= radius && speed.Components[0] < 0
-            || center.Components[0] >= 640 - radius && speed.Components[0] > 0) {
+            || center.Components[0] >= Width - radius && speed.Components[0] > 0) {
             speed.Components[0] *= -CollisionElasticity; // mirror & dampen
             speed.Components[1] *= CollisionOtherDimension; // dampen only
         }
@@ -145,8 +145,8 @@ public class CircleScene : Scene {
 
     private void ClampToSurface(Circle shape) {
         shape.Center.Components[0] = Math.Max(shape.Radius, shape.Center.Components[0]);
-        shape.Center.Components[0] = Math.Min(640 - shape.Radius, shape.Center.Components[0]);
+        shape.Center.Components[0] = Math.Min(Width - shape.Radius, shape.Center.Components[0]);
         shape.Center.Components[1] = Math.Max(shape.Radius, shape.Center.Components[1]);
-        shape.Center.Components[1] = Math.Min(480 - shape.Radius, shape.Center.Components[1]);
+        shape.Center.Components[1] = Math.Min(Height - shape.Radius, shape.Center.Components[1]);
     }
 }

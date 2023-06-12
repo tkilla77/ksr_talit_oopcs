@@ -16,8 +16,8 @@ public class Surface : Game {
     public Surface(Scene scene) {
         _graphics = new GraphicsDeviceManager(this);
         _graphics.IsFullScreen = false;
-        _graphics.PreferredBackBufferWidth = 640;
-        _graphics.PreferredBackBufferHeight = 480;
+        _graphics.PreferredBackBufferWidth = scene.Width;
+        _graphics.PreferredBackBufferHeight = scene.Height;
         _graphics.ApplyChanges();
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
@@ -26,11 +26,11 @@ public class Surface : Game {
 
     protected override void Initialize() {
         // Resources in Monogame land
-        _texture = new Texture2D(GraphicsDevice, 640, 480);
-        _buffer = new Color[_texture.Width * _texture.Height];
+        _texture = new Texture2D(GraphicsDevice, _scene.Width, _scene.Height);
+        _buffer = new Color[_scene.Width * _scene.Height];
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         // Resources in our Figure land.
-        _canvas = new Canvas(640, 480);
+        _canvas = new Canvas(_scene.Width, _scene.Height);
 
         base.Initialize();
     }
