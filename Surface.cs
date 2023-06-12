@@ -48,6 +48,9 @@ public class Surface : Game {
     }
 
     protected override void Draw(GameTime gameTime) {
+        // This is quite ineffcient: we render each frame into a SkiaSharp bitmap
+        // and create a Monogame texture from that. Oh wel...
+
         // Draw our scene - only the circle for now.
         _canvas.Clear();
         _scene.Draw(_canvas);
