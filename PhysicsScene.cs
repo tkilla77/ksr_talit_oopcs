@@ -14,14 +14,14 @@ public struct Material {
 
 public class Sphere {
     public static Sphere FromShapeAndMass(Circle figure, double mass) {
-        double radius_si = figure.Radius / CircleScene.PixelsPerMeter;
+        double radius_si = figure.Radius / PhysicsScene.PixelsPerMeter;
         // Assume a 3d-sphere displacing the medium at given density
         double volume = Math.PI*4/3*Math.Pow(radius_si, 3);
         return new Sphere(figure, volume, mass);
     }
 
     public static Sphere SolidSphere(Circle circle, Material material) {
-        double radius_si = circle.Radius / CircleScene.PixelsPerMeter;
+        double radius_si = circle.Radius / PhysicsScene.PixelsPerMeter;
         // Assume a 3d-sphere displacing the medium at given density
         double volume = Math.PI*4/3*Math.Pow(radius_si, 3);
 
@@ -42,7 +42,7 @@ public class Sphere {
     public Vector Speed { get; set; }
 }
 
-public class CircleScene : Scene {
+public class PhysicsScene : Scene {
     private const double ScreenResolutionPpi = 160; // PixelsPerInch = PPI
     // 1 Inch = 2.54cm
     // Scaling Factor
@@ -59,7 +59,7 @@ public class CircleScene : Scene {
 
     private Sphere soapBubble, pingPongBall, steelBall;
 
-    public CircleScene() {
+    public PhysicsScene() {
         soapBubble = Sphere.SolidSphere(new Circle(new Vector(50, 150), new Vector(0.06 * PixelsPerMeter, 0)), Material.Air);
         soapBubble.Shape.SetColors("700f", "300a");
         // Filled with hot air, so slightly lighter than air.
