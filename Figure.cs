@@ -19,6 +19,15 @@ public abstract class Figure {
      * between each consecutive pair of points of the figure.
      */
     public abstract void Draw(Canvas canvas);
+
+    public virtual void Move(Vector vector) {
+        foreach (Vector v in GetMovingPoints()) {
+            v.Move(vector);
+        }
+    }
+
+    /** Returns the set of points that need to be moved for translation. */
+    protected abstract IEnumerable<Vector> GetMovingPoints();
 }
 
 /** A closed polygon. */
@@ -31,6 +40,10 @@ public class Polygon : Figure {
     /** The sequence of points to be connected. */
     protected virtual Vector[] Points() {
         return points;
+    }
+
+    protected override IEnumerable<Vector> GetMovingPoints() {
+        return Points();
     }
 
     public override void Draw(Canvas canvas) {
@@ -51,6 +64,10 @@ public class Circle : Figure {
 
     public override void Draw(Canvas canvas) {
         canvas.Circle(center, radius.Magnitude, StrokeColor, FillColor);
+    }
+
+    protected override IEnumerable<Vector> GetMovingPoints() {
+        return new Vector[] { center };
     }
 
     public Vector Center {
