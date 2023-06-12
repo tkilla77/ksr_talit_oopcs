@@ -1,6 +1,7 @@
 namespace geometry;
 
 public struct Material {
+    public static Material Helium = new Material(0.1786);
     public static Material Air = new Material(1.2);
     public static Material Water = new Material(1000);
     public static Material Steel = new Material(7850);
@@ -35,7 +36,7 @@ public class Sphere {
     }
 
     public Circle Shape { get; }
-    public double Mass { get; }
+    public double Mass { get; set; }
     public double Volume { get; }
 
     public Vector Speed { get; set; }
@@ -59,9 +60,10 @@ public class CircleScene : Scene {
     private Sphere soapBubble, pingPongBall, steelBall;
 
     public CircleScene() {
-        // filled with Helium...
         soapBubble = Sphere.SolidSphere(new Circle(new Vector(50, 150), new Vector(0.06 * PixelsPerMeter, 0)), Material.Air);
         soapBubble.Shape.SetColors("700f", "300a");
+        // Filled with hot air, so slightly lighter than air.
+        soapBubble.Mass *= 0.99;
         soapBubble.Speed = new Vector(0.1, 0);
         figures.Add(soapBubble.Shape);
 
