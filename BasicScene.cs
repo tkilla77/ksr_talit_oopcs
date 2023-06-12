@@ -1,24 +1,17 @@
 using geometry;
 
 class BasicScene : Scene {
-    private double NextCircle = 2;
+    private Figure Circle;
+    private Vector Speed;
     public BasicScene() {
-        Figure circle = new Circle(new Vector(100, 100), new Vector(40, 0));
-        circle.SetColors("black", "red");
-        figures.Add(circle);
-
-        Figure triangle = new Polygon(new Vector(300, 250), new Vector(370, 200), new Vector(280, 180));
-        triangle.SetColors("ff3", "33f");
-        figures.Add(triangle);
+        Circle = new Circle(new Vector(100, 100), new Vector(40, 0));
+        Circle.SetColors("black", "red");
+        figures.Add(Circle);
+        Speed = new Vector(15, 10);
     }
     public override void Update(double totalSeconds, double elapsedSeconds) {
-        if (totalSeconds > NextCircle) {
-            // Create new circles every so often...
-            Figure triangle = new Circle(RandomVector(60), new Vector(30, 0));
-            triangle.SetColors(RandomColor(), RandomColor());
-            figures.Add(triangle);
-            NextCircle += 2;
-        }
+        Vector translation = elapsedSeconds * Speed;
+        Circle.Move(translation);
     }
 
     /** Creates a random vector within the canvas, no closer than margin to the borders. */
